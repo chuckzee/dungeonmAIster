@@ -1,0 +1,74 @@
+{
+    "name": "Goblin's Lair",
+    "level": 1,
+    "partySize": 4,
+    "description": "A sprawling network of dark and winding tunnels, the Goblin's Lair is home to a tribe of mischievous goblins.",
+    "map": {
+        "entrance": {
+            "description": "A dimly lit chamber. Goblin sentries lie in wait to surprise the adventurers, hoping to catch them unawares. Moss covers the northern wall, glistening under torchlight.",
+            "state": {
+                "visited": false,
+                "enemiesDefeated": false,
+                "lootCollected": false
+            },
+            "locked": false,
+            "enemies": [
+                {
+                    "name": "Goblin Sentry",
+                    "type": "Goblin",
+                    "level": 1,
+                    "hp": 8,
+                    "attack": {
+                        "type": "Melee",
+                        "damage": "1D6+1"
+                    },
+                    "defense": 12,
+                    "abilities": [
+                        {
+                            "name": "Quick Strike",
+                            "description": "Attacks quickly with a dagger."
+                        }
+                    ]
+                }
+            ],
+            "loot": [
+                {
+                    "name": "Healing Potion",
+                    "type": "Potion",
+                    "effect": "Restores 2D4+2 hit points",
+                    "quantity": 1
+                }
+            ]
+        },
+        "barracks": {
+            "description": "The room is strewn with crude tools and weapons, alongside half-eaten rats. Goblins clearly make their home here, and wouldn't appreciate intruders.",
+            "state": {
+                "visited": false,
+                "enemiesDefeated": false,
+                "lootCollected": false
+            },
+            "locked": true,
+            "keyRequired": "Copper Key",
+            "enemies": [
+                {
+                    "name": "Goblin Warrior",
+                    "type": "Goblin",
+                    "level": 1,
+                    "hp": 7,
+                    "attack": {
+                        "type": "Melee",
+                        "damage": "1D6+2"
+                    },
+                    "defense": 13,
+                    "abilities": [
+                        {
+                            "name": "Shield Bash",
+                            "description": "Attacks with a shield, causing stun."
+                        }
+                    ]
+                }
+            ],
+            "loot": []
+        }
+    }
+}
