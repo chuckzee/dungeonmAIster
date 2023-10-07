@@ -142,8 +142,6 @@ async function processPlayerResponse(playerResponse, sessionId) {
     };
 }
 
-/* Existing code... */
-
 module.exports = {
   constructDungeon,
   startTheAdventure,
