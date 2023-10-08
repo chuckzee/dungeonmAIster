@@ -15,13 +15,13 @@ const commands = [
       {
         name: 'players',
         type: 10, // NUMBER
-        description: 'Input the number of player characters',
+        description: 'Input the number of player characters.',
         required: false,
       },
       {
         name: 'level',
         type: 10, // NUMBER
-        description: 'Input the level of the player characters',
+        description: 'Input the level of the player characters.',
         required: false,
       },
     ],
@@ -29,7 +29,12 @@ const commands = [
   {
     name: 'sessionid',
     type: 1, // CHAT_INPUT
-    description: 'Print your current session ID',
+    description: 'Print your current session ID.',
+  },
+  {
+    name: 'clear',
+    type: 1, // CHAT_INPUT
+    description: 'Clear your current session.',
   },
   {
     name: 'action',
