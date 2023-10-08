@@ -52,5 +52,5 @@ jobs:
         with:
           app-name: 'dungeonmAIster'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_4BCA777F76514EFA86A359D677F01A33 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_06D3E45B7F2B4810B78F21AB393BBAA1 }}
           package: .
