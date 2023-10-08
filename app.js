@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 require('dotenv').config()
+const chatbotService = require('./services/chatbot');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -40,5 +41,7 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+chatbotService.startBot();
 
 module.exports = app;
