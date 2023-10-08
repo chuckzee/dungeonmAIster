@@ -11,6 +11,20 @@ const commands = [
     name: 'start',
     type: 1, // CHAT_INPUT
     description: 'Start a new D&D game!',
+    options: [
+      {
+        name: 'players',
+        type: 10, // NUMBER
+        description: 'Input the number of player characters',
+        required: false,
+      },
+      {
+        name: 'level',
+        type: 10, // NUMBER
+        description: 'Input the level of the player characters',
+        required: false,
+      },
+    ],
   },
   {
     name: 'sessionid',
@@ -54,7 +68,9 @@ const userSessions = {};
 
 async function handleStartCommand(interaction) {
   const userId = interaction.user.id;
-  const [dungeon, sessionId] = await constructDungeon();
+  const playerNumber = interaction.options.getNumber('players');
+  const playerLevel = interaction.options.getNumber('level');
+  const [dungeon, sessionId] = await constructDungeon(playerNumber, playerLevel);
   userSessions[userId] = sessionId;
   const result = await startTheAdventure(dungeon, sessionId);
   await interaction.editReply(result.response);
