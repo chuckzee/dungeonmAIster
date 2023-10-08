@@ -141,7 +141,7 @@ client.on('interactionCreate', async interaction => {
       case 'action':
         await handleActionCommand(interaction);
         break;
-      case 'sessionId':
+      case 'sessionid':
         await handleSessionIdCommand(interaction);
         break;
       case 'clear':
