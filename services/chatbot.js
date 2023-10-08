@@ -96,10 +96,14 @@ async function handleActionCommand(interaction) {
 }
 
 async function handleSessionIdCommand(interaction) {
+  console.log("Entered handleSessionIdCommand"); // Log when the function is entered
   const userId = interaction.user.id;
+  console.log("UserId:", userId); // Log the user ID
   if (userSessions[userId]) {
+    console.log("SessionId for user:", userSessions[userId]); // Log the session ID if exists
     await interaction.editReply(`Your session ID is ${userSessions[userId]}.`);
   } else {
+    console.log("No session found for user"); // Log if no session found
     await interaction.editReply("It looks like you have no active session. Use the /start command to begin.");
   }
 }
@@ -125,6 +129,10 @@ client.on('interactionCreate', async interaction => {
 
   await interaction.deferReply();
 
+  const timeout = setTimeout(() => {
+    interaction.editReply("Sorry, I couldn't process your command in time.");
+  }, 30000); 
+
   try {
     switch (interaction.commandName) {
       case 'start':
@@ -142,9 +150,13 @@ client.on('interactionCreate', async interaction => {
       default:
         break;
     }
+
+    clearTimeout(timeout);
   } catch (error) {
     console.error("Error handling interaction:", error);
     await interaction.editReply("There was an error processing your command.");
+
+    clearTimeout(timeout);
   }
 });
 
