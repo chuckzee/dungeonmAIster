@@ -13,6 +13,11 @@ const commands = [
     description: 'Start a new D&D game!',
   },
   {
+    name: 'sessionid',
+    type: 1, // CHAT_INPUT
+    description: 'Print your current session ID',
+  },
+  {
     name: 'action',
     type: 1, // CHAT_INPUT
     description: 'Send an action to the DM.',
@@ -47,10 +52,55 @@ try {
   console.error(error);
 }
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 const userSessions = {};
 
-const SERVER_URL = 'https://dungeonmaister.azurewebsites.net'; // Replace with your server's URL
+async function handleStartCommand(interaction) {
+  const userId = interaction.user.id;
+  const [dungeon, sessionId] = await constructDungeon();
+  userSessions[userId] = sessionId;
+  const result = await startTheAdventure(dungeon, sessionId);
+  await interaction.editReply(result.response);
+}
+
+async function handleActionCommand(interaction) {
+  const userId = interaction.user.id;
+  const playerAction = interaction.options.getString('description');
+  console.log("the player action", playerAction);
+  const sessionId = userSessions[userId];
+  console.log("sessionId", sessionId);
+
+  if (!sessionId) {
+    await interaction.editReply("You haven't started a game yet. Use the /start command first.");
+    return;
+  }
+
+  const result = await processPlayerResponse(playerAction, sessionId);
+  console.log("result", result);
+  const combinedResponse = `**${interaction.user.username}**: ${playerAction}\n\n${result.response}`;
+  await interaction.editReply(combinedResponse);
+  console.log("result.response", result.response);
+}
+
+async function handleSessionIdCommand(interaction) {
+  const userId = interaction.user.id;
+  if (userSessions[userId]) {
+    await interaction.editReply(`Your session ID is ${userSessions[userId]}.`);
+  } else {
+    await interaction.editReply("It looks like you have no active session. Use the /start command to begin.");
+  }
+}
+
+async function handleClearCommand(interaction) {
+  const userId = interaction.user.id;
+  if (userSessions[userId]) {
+    userSessions[userId] = null;
+    await interaction.editReply(`Successfully cleared your game session, sessionID: ${userSessions[userId]}.`);
+  } else {
+    await interaction.editReply("It looks like you have no active session. Use the /start command to begin.");
+  }
+}
+
+const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
@@ -59,30 +109,24 @@ client.on('ready', () => {
 client.on('interactionCreate', async interaction => {
   if (!interaction.isChatInputCommand()) return;
 
-  const userId = interaction.user.id; 
-
   await interaction.deferReply();
 
   try {
-    if (interaction.commandName === 'start') {
-      const [dungeon, sessionId] = await constructDungeon(); 
-      userSessions[userId] = sessionId;
-      const result = await startTheAdventure(dungeon, sessionId); 
-      await interaction.editReply(result.response);
-    } else if (interaction.commandName === 'action') {
-      const playerAction = interaction.options.getString('description');
-      console.log("the player action", playerAction);
-      const sessionId = userSessions[userId];
-      console.log("sessionId", sessionId);
-      if (!sessionId) {
-        await interaction.editReply("You haven't started a game yet. Use the /start command first.");
-        return;
-      }
-      const result = await processPlayerResponse(playerAction, sessionId);
-      console.log("result", result);
-      const combinedResponse = `**${interaction.user.username}**: ${playerAction}\n\n${result.response}`;
-      await interaction.editReply(combinedResponse);
-      console.log("result.response", result.response);
+    switch (interaction.commandName) {
+      case 'start':
+        await handleStartCommand(interaction);
+        break;
+      case 'action':
+        await handleActionCommand(interaction);
+        break;
+      case 'sessionId':
+        await handleSessionIdCommand(interaction);
+        break;
+      case 'clear':
+        await handleClearCommand(interaction);
+        break;
+      default:
+        break;
     }
   } catch (error) {
     console.error("Error handling interaction:", error);
