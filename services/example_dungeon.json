@@ -1,74 +1,92 @@
 {
-    "name": "Goblin's Lair",
-    "level": 1,
-    "partySize": 4,
-    "description": "A sprawling network of dark and winding tunnels, the Goblin's Lair is home to a tribe of mischievous goblins.",
+    "name": "Ravensbrook Mansion",
+    "description": "An ancient mansion atop a hill, where secrets of the past lie buried.",
+    "player": {
+        "name": "",
+        "inventory": [],
+        "current_room": "foyer",
+        "last_player_action": ""
+    },
     "map": {
-        "entrance": {
-            "description": "A dimly lit chamber. Goblin sentries lie in wait to surprise the adventurers, hoping to catch them unawares. Moss covers the northern wall, glistening under torchlight.",
-            "state": {
-                "visited": false,
-                "enemiesDefeated": false,
-                "lootCollected": false
+        "foyer": {
+            "description": "A grand entrance with portraits of stern ancestors.",
+            "items": ["Tattered Note"],
+            "exits": ["library (north)", "dining_room (west)", "conservatory (east)", "grand_staircase (south)"],
+            "encounters": {
+                "chilled_breeze": {
+                    "description": "An unnatural chill sweeps through the foyer, causing the candle flames to flicker."
+                }
             },
-            "locked": false,
-            "enemies": [
-                {
-                    "name": "Goblin Sentry",
-                    "type": "Goblin",
-                    "level": 1,
-                    "hp": 8,
-                    "attack": {
-                        "type": "Melee",
-                        "damage": "1D6+1"
-                    },
-                    "defense": 12,
-                    "abilities": [
-                        {
-                            "name": "Quick Strike",
-                            "description": "Attacks quickly with a dagger."
-                        }
-                    ]
-                }
-            ],
-            "loot": [
-                {
-                    "name": "Healing Potion",
-                    "type": "Potion",
-                    "effect": "Restores 2D4+2 hit points",
-                    "quantity": 1
-                }
-            ]
+            "for_bot_only_notes": {
+                "hidden_details": "The portraits are of the Ravensbrook family, a lineage rumored to have dabbled in dark magic. One of the portraits seems slightly askew.",
+                "possible_actions": "If the player decides to inspect the askew portrait, they may find a hidden switch that reveals a secret passage.",
+                "hints": "If the player gets stuck, mention a faint draft coming from the direction of the askew portrait."
+            },
+            "player_history_with_room": []
         },
-        "barracks": {
-            "description": "The room is strewn with crude tools and weapons, alongside half-eaten rats. Goblins clearly make their home here, and wouldn't appreciate intruders.",
-            "state": {
-                "visited": false,
-                "enemiesDefeated": false,
-                "lootCollected": false
+        "library": {
+            "description": "Shelves lined with dusty books stretch high to the ceiling. A wooden desk sits near a window, covered in old papers.",
+            "items": ["Ancient Tome", "Rusty Key"],
+            "exits": ["foyer (south)"],
+            "encounters": {},
+            "for_bot_only_notes": {
+                "hidden_details": "One of the bookshelves has a mechanism that reveals a hidden compartment.",
+                "possible_actions": "If the player reads the Ancient Tome, they'll discover hints about the mansion's history and clues about a hidden treasure.",
+                "hints": "If the player is aimless, the glint of the Rusty Key may catch their attention."
             },
-            "locked": true,
-            "keyRequired": "Copper Key",
-            "enemies": [
-                {
-                    "name": "Goblin Warrior",
-                    "type": "Goblin",
-                    "level": 1,
-                    "hp": 7,
-                    "attack": {
-                        "type": "Melee",
-                        "damage": "1D6+2"
-                    },
-                    "defense": 13,
-                    "abilities": [
-                        {
-                            "name": "Shield Bash",
-                            "description": "Attacks with a shield, causing stun."
-                        }
-                    ]
+            "player_history_with_room": []
+        },
+        "dining_room": {
+            "description": "A long wooden table set with tarnished silverware dominates the room. Portraits of family members adorn the walls.",
+            "items": ["Silver Candlestick"],
+            "exits": ["foyer (east)", "kitchen (north)"],
+            "encounters": {},
+            "for_bot_only_notes": {
+                "hidden_details": "A loose floorboard hides a stash of old coins.",
+                "possible_actions": "If the player decides to inspect or clean the Silver Candlestick, they may notice engravings that hint at the mansion's mysteries.",
+                "hints": "The sound of creaking floorboards can draw the player's attention to the loose floorboard."
+            },
+            "player_history_with_room": []
+        },
+        "conservatory": {
+            "description": "Sunlight filters through broken windows, illuminating overgrown plants and a dried-up fountain.",
+            "items": ["Crystal Vial"],
+            "exits": ["foyer (west)"],
+            "encounters": {
+                "whispering_vines": {
+                    "description": "The vines seem to whisper secrets from times long past."
                 }
-            ],
-            "loot": []
+            },
+            "for_bot_only_notes": {
+                "hidden_details": "The dried-up fountain has a loose stone that hides a precious gem.",
+                "possible_actions": "Drinking from the Crystal Vial may reveal hidden inscriptions in the room.",
+                "hints": "A ray of sunlight might shine directly onto the loose stone at a certain time."
+            },
+            "player_history_with_room": []
+        },
+        "grand_staircase": {
+            "description": "A magnificent staircase leading to the upper floor, with statues of guardian lions on either side.",
+            "items": [],
+            "exits": ["foyer (north)", "master_bedroom (upstairs)"],
+            "encounters": {},
+            "for_bot_only_notes": {
+                "hidden_details": "One of the guardian lions has a switch under its paw that activates a trapdoor.",
+                "possible_actions": "If the player inspects the lions closely, they may discover the switch.",
+                "hints": "A draft from above might suggest there's more to this staircase than meets the eye."
+            },
+            "player_history_with_room": []
+        },
+        "master_bedroom": {
+            "description": "A large, ornate room with a four-poster bed and a locked chest at its foot.",
+            "items": ["Old Photograph"],
+            "exits": ["grand_staircase (downstairs)"],
+            "encounters": {},
+            "for_bot_only_notes": {
+                "hidden_details": "The chest contains a map of the mansion's hidden passages.",
+                "possible_actions": "The Rusty Key from the library can unlock the chest.",
+                "hints": "An eerie lullaby might be heard, suggesting something of interest in this room."
+            },
+            "player_history_with_room": []
         }
     }
 }

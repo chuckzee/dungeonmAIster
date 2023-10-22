@@ -1,3 +1,10 @@
+/**
+ * This module exports a Discord bot that allows users to play a D&D-style game using OpenAI's GPT-3 language model.
+ * The bot listens for slash commands and responds with information about the user's game session.
+ * The bot uses the Discord.js library to interact with the Discord API.
+ * The bot also uses the OpenAI API to generate responses to user actions.
+ * @module chatbot
+ */
 require('dotenv').config();
 
 const { Client, GatewayIntentBits, REST, Routes } = require('discord.js');
@@ -10,19 +17,13 @@ const commands = [
   {
     name: 'start',
     type: 1, // CHAT_INPUT
-    description: 'Start a new D&D game!',
+    description: 'Start a new text-based dungeon crawl!',
     options: [
       {
-        name: 'players',
-        type: 10, // NUMBER
-        description: 'Input the number of player characters.',
-        required: false,
-      },
-      {
-        name: 'level',
-        type: 10, // NUMBER
-        description: 'Input the level of the player characters.',
-        required: false,
+        name: 'name',
+        type: 3, // STRING
+        description: 'Input the name of the player character.',
+        required: true,
       },
     ],
   },
@@ -73,11 +74,10 @@ const userSessions = {};
 
 async function handleStartCommand(interaction) {
   const userId = interaction.user.id;
-  const playerNumber = interaction.options.getNumber('players');
-  const playerLevel = interaction.options.getNumber('level');
-  const [dungeon, sessionId] = await constructDungeon(playerNumber, playerLevel);
+  const playerName = interaction.options.getString('name');
+  const [dungeon, sessionId] = await constructDungeon(playerName);
   userSessions[userId] = sessionId;
-  const result = await startTheAdventure(dungeon, sessionId);
+  const result = await startTheAdventure(dungeon, sessionId, playerName);
   await interaction.editReply(result.response);
 }
 
@@ -116,8 +116,9 @@ async function handleSessionIdCommand(interaction) {
 async function handleClearCommand(interaction) {
   const userId = interaction.user.id;
   if (userSessions[userId]) {
+    const oldSessionId = userSessions[userId]; // Store the session ID before clearing it
     userSessions[userId] = null;
-    await interaction.editReply(`Successfully cleared your game session, sessionID: ${userSessions[userId]}.`);
+    await interaction.editReply(`Successfully cleared your game session, sessionID: ${oldSessionId}.`);
   } else {
     await interaction.editReply("It looks like you have no active session. Use the /start command to begin.");
   }
@@ -135,7 +136,7 @@ client.on('interactionCreate', async interaction => {
   await interaction.deferReply();
 
   const timeout = setTimeout(() => {
-    interaction.editReply("Sorry, I couldn't process your command in time.");
+    interaction.editReply("Sorry, I'm still working on a response... hold fast, adventurer!");
   }, 30000); 
 
   try {
